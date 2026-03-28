@@ -3,10 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Services\ApplicationsService;
 use Illuminate\Http\Request;
 
 class ApplicationController extends Controller
 {
+
+//on doit appeler le service approprié bref un service c'est une classe, c'est de la poo de base , on va faire l'appel avec un constructeur (classique en poo.)
+
+    protected $applicationsService ;
+    public function __construct(ApplicationsService $applicationsService)
+    {
+        $this->applicationsService=$applicationsService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -29,6 +38,8 @@ class ApplicationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+
     public function store(Request $request)
     {
         //
@@ -37,13 +48,11 @@ class ApplicationController extends Controller
             'company_name' => 'nullable|string|max:255',
             'position' => 'nullable|string|max:255',
             'job_link' => 'nullable|url',
-            'status' => 'required|string|in:applied,screening,interview, rejected,accepted',
+            'status' => 'required|string|in:applied,screening,interview,rejected,accepted',
             'applied_at' => 'required|date',
             'notes'=> 'nullable|string',
         ]);
-        Application::create([
-            ...$validated, 'candidate_id' => auth()->id(),
-        ]);
+        $this->applicationsService->createApplication(auth()->id() , $validated);
 
         return redirect()->route('applications.index')->with('success', 'Candidature créée avec succès.');
     }
@@ -79,8 +88,7 @@ class ApplicationController extends Controller
     public function update(Request $request, Application $application)
     {
         // 
-        $oldStatus = $application->status;
-        $validated = $request->validate([
+            $validated = $request->validate([
             'job_offer_id' => 'nullable|exists:job_offers,id',
             'company_name' => 'nullable|string|max:255',
             'position' => 'nullable|string|max:255',
@@ -92,16 +100,7 @@ class ApplicationController extends Controller
          if($application->candidate_id !==auth()->id()){
             abort(403, 'Accès non autorisé');
         }
-        $application->update($validated);
-
-        if($oldStatus !==$validated['status']){
-            $application->applicationStatusHistories()->create([
-                'old_status'=>$oldStatus,
-                'new_status'=>$validated['status'],
-                'changed_by'=>auth()->id(),
-                'changed_at'=>now(),
-            ]);
-        }
+        $this->applicationsService->updateApplication($application,$validated,auth()->id());
         
         return redirect()->route('applications.index')->with('success', 'Candidature mise à jour avec succès.');
     }

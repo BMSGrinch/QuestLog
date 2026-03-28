@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\JobOffer;
+use App\Services\JobOfferService;
 use Illuminate\Http\Request;
 
 class JobOfferController extends Controller
 {
+    protected $jobOffersService;
+    public function __construct(JobOfferService $jobOfferService)
+    {
+        $this->jobOffersService = $jobOfferService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -48,9 +54,7 @@ class JobOfferController extends Controller
             'status' => 'required|string|in:draft,open,closed',
         ]);
 
-        JobOffer::create([
-            ...$validated, 'recruiter_id' => auth()->id(),
-        ]);
+        $this->jobOffersService->createJobOffer(auth()->id() , $validated);
         return redirect()->route('job-offers.index')->with('success', 'offre créée avec succès.');
     }
 
@@ -63,7 +67,7 @@ class JobOfferController extends Controller
         $jobOffer->jobOfferViews()->create([
             'ip_address' => $request->ip(),
         ]);
-
+        $jobOffer->load('recruiter','applications');
         return view('job-offers.info', compact('jobOffer'));
     }
 
@@ -97,7 +101,7 @@ class JobOfferController extends Controller
             'status' => 'required|string|in:draft,open,closed',
         ]);
 
-        $jobOffer->update($validated);
+        $this->jobOffersService->updateJobOffer($validated , $jobOffer);
         return redirect()->route('job-offers.index')->with('success', 'offre mise à jour avec succès.');
     }
     
