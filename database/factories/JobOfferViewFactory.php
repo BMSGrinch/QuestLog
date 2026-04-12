@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\JobOffer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,12 @@ class JobOfferViewFactory extends Factory
      */
     public function definition(): array
     {
+         
         return [
             //
+            'job_offer_id'=>JobOffer::inRandomOrder()->first()->id,
+            'ip_address'=>fake()->ipv4(),
+            'viewed_at'=>fake()->dateTimeBetween('-6 months','now'),
         ];
     }
 }

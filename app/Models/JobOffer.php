@@ -24,6 +24,8 @@ class JobOffer extends Model
         'application_deadline',
         'remote_policy',
         'status',
+        'created_at',
+        'updated_at'
     ];
 
     protected $casts = [

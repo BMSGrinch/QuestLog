@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Application;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +18,18 @@ class ApplicationStatusHistoryFactory extends Factory
      */
     public function definition(): array
     {
+        $status = ['applied','screening','interview','rejected','accepted'];
+        $oldStatus = fake()->randomElement($status);
+        $newStatus = fake()->randomElement(array_values(array_filter($status , fn($s) => $s !== $oldStatus)));
+        
         return [
-            //
+            // 
+            'application_id'=>Application::inRandomOrder()->first()->id,
+            'changed_by'=>User::where('role','recruiter')->inRandomOrder()->first()->id,
+            'old_status'=>$oldStatus,
+            'new_status'=>$newStatus,
+            'changed_at'=>fake()->dateTimeBetween('-6 months','now'),
+
         ];
     }
 }
