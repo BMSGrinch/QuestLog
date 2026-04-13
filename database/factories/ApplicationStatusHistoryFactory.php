@@ -24,8 +24,6 @@ class ApplicationStatusHistoryFactory extends Factory
         
         return [
             // 
-            'application_id'=>Application::inRandomOrder()->first()->id,
-            'changed_by'=>User::where('role','recruiter')->inRandomOrder()->first()->id,
             'old_status'=>$oldStatus,
             'new_status'=>$newStatus,
             'changed_at'=>fake()->dateTimeBetween('-6 months','now'),

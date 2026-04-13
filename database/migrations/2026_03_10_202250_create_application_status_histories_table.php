@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('application_status_history', function (Blueprint $table) {
+        Schema::create('application_status_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('application_id')->constrained('applications')->cascadeOnDelete();
             $table->foreignId('changed_by')->constrained('users')->cascadeOnDelete();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('application_status_history');
+        Schema::dropIfExists('application_status_histories');
     }
 };

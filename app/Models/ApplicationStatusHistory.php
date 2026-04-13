@@ -18,6 +18,8 @@ class ApplicationStatusHistory extends Model
         'changed_at',
     ];
 
+    public $timestamps = false;
+
     protected $casts = [
         'changed_at' => 'datetime',
     ];

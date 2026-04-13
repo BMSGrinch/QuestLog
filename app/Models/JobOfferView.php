@@ -15,6 +15,8 @@ class JobOfferView extends Model
         'ip_address',
     ];
 
+    public $timestamps = false;
+
     public function jobOffer(){
         return $this->belongsTo(JobOffer::class);
     }

@@ -28,8 +28,8 @@ class ApplicationSeeder extends Seeder
             Application::factory()->count($count)->create([
                 'job_offer_id'=> $offer->id,
                 'applied_at'=>fake()->dateTimeBetween(
-                    $offer->created_at->addDays(3),
-                    'now'
+                    $offer->created_at->copy()->addDays(3),
+                    '- 1 day'
                 ),
                 'company_name'=>null ,
                 'position' => null,
@@ -41,7 +41,7 @@ class ApplicationSeeder extends Seeder
                         'old_status'=>'applied',
                         'new_status'=>fake()->randomElement(['screening','interview','rejected','accepted']),
                         'changed_by'=> $offer->recruiter_id,                    
-                        'changed_at'=>fake()->dateTimeBetween($application->applied_at , 'now')
+                        'changed_at'=>fake()->dateTimeBetween($application->applied_at->copy()->addDays(1) , 'now'),
                         ]);
                         
                     }

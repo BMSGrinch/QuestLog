@@ -91,7 +91,7 @@ class JobOfferFactory extends Factory
         
         $expMin =$this->faker->numberBetween(0,5);
 
-        $createdAt=$this->faker->dateTimeBetween('-6 months','now');
+        $createdAt=$this->faker->dateTimeBetween('-6 months','-4 days');
 
         return [
             'recruiter_id'=>User::where('role','recruiter')->inRandomOrder()->first()->id,

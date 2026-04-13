@@ -28,7 +28,7 @@ class ApplicationFactory extends Factory
         'job_link'=> null,
         'status'=> fake()->randomElement(['applied','screening','interview','rejected','accepted']),
         'applied_at'=>$appliedAt,
-        'notes'=>$this->faker->optional(0,4)->sentence(),
+        'notes'=>$this->faker->optional(0.4)->sentence(),
         ];
     }
 }
