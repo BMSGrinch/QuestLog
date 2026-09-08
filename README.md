@@ -44,4 +44,4 @@ php artisan migrate --seed
 | Candidat | candidate@questlog.test | password123 |
 
 ## Screenshots
-...
+https://github.com/BMSGrinch/QuestLog/issues/1#issue-5386504921
