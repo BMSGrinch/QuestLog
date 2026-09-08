@@ -45,3 +45,4 @@ php artisan migrate --seed
 
 ## Screenshots
 https://github.com/BMSGrinch/QuestLog/issues/1#issue-5386504921
+https://github.com/BMSGrinch/QuestLog/issues/2#issue-5386524490
